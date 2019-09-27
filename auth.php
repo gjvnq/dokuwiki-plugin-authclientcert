@@ -44,7 +44,6 @@ class auth_plugin_authclientcert extends auth_plugin_authplain
         global $USERINFO;
         $sticky ? $sticky = true : $sticky = false; //sanity check
 
-        // error_log("trustExternal of authremoteuser\n", 3, "/tmp/plugin.log");
         $header_name = $this->getConf('http_header_name');
         if (empty($header_name)) {
             $this->_debug("CLIENT CERT: http_header_name is empty", 0, __LINE__, __FILE__);
@@ -56,7 +55,6 @@ class auth_plugin_authclientcert extends auth_plugin_authplain
             return false;
         }
         $certUserInfo = $this->_extractUserInfoFromCert($cert);
-        msg(print_r($certUserInfo, true));
         if (empty($certUserInfo)) {
             return false;
         }
@@ -126,14 +124,6 @@ class auth_plugin_authclientcert extends auth_plugin_authplain
             return false;
         }
 
-        // go after 2.16.840.1.113730.3.1.3 - employeeNumber
-        // [name] => /C=CH/O=Admin/OU=VBS/OU=V/2.16.840.1.113730.3.1.3=E1024143/CN=Pawel Jasinski
-        $cert_name = $client_cert_data['name'];
-        $employee_number = $this->_getOID("2.16.840.1.113730.3.1.3", $cert_name);
-        if (empty($employee_number)) {
-            $this->_debugCert($client_cert_data, "CLIENT CERT: user certificate is missing user name (employee number)", 0, __LINE__, __FILE__);
-            return false;
-        }
         // go after email address in extension.subjectAltName
         // [extensions] => Array ( [subjectAltName] => email:Pawel.Jasinski@vtg.admin.ch, othername:  ...<snip/>
         $altName = $client_cert_data['extensions']['subjectAltName'];
@@ -145,12 +135,31 @@ class auth_plugin_authclientcert extends auth_plugin_authplain
                 break;
             }
         }
+		// Also look for the email in the subject (openssl/easy-rsa seems to do things this way)
+		if (empty($mail)) {
+			$mail = $client_cert_data['subject']['emailAddress'];
+		}
         if (empty($mail)) {
             $this->_debugCert($client_cert_data, "CLIENT CERT: user certificate is missing email address", 0, __LINE__, __FILE__);
             return false;
         }
-        $user = $this->cleanUser($employee_number);
+		$user = $this->getUserByEmail($mail);
         return ['name' => $name, 'mail' => $mail, 'user' => $user ];
+    }
+
+	 /**
+     * Find a user by his email address
+     *
+     * @param $mail
+     * @return bool|string
+     */
+    protected function getUserByEmail($mail) {
+        if($this->users === null) $this->_loadUserData();
+        $mail = strtolower($mail);
+        foreach($this->users as $user => $uinfo) {
+            if(strtolower($uinfo['mail']) == $mail) return $user;
+        }
+        return false;
     }
 
     private function _getOID($OID, $name) {

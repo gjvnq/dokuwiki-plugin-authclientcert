@@ -1,6 +1,6 @@
 <?php
 /**
- * DokuWiki Plugin authclientcert (Auth Component)
+ * DokuWiki Plugin authclientcert0email0only (Auth Component)
  *
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author  Pawel Jasinski <pawel.jasinski@gmail.com>
@@ -11,7 +11,7 @@ if (!defined('DOKU_INC')) {
     die();
 }
 
-class auth_plugin_authclientcert extends auth_plugin_authplain
+class auth_plugin_authclientcert0email0only extends auth_plugin_authplain
 {
 
     /**

@@ -12,16 +12,13 @@ will not work!
 Please refer to http://www.dokuwiki.org/plugins for additional info
 on how to install plugins in DokuWiki.
 
-----
-Copyright (C) Pawel Jasinski <pawel.jasinski@gmail.com>
+NGINX
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; version 2 of the License
+Remember to add these lines to your nginx config:
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  fastcgi_param SSL_CLIENT_CERT_OLD $ssl_client_cert;
+  fastcgi_param SSL_CLIENT_CERT $ssl_client_escaped_cert;
+  fastcgi_param SSL_CLIENT_VERIFY $ssl_client_verify;
+  fastcgi_param SSL_CLIENT_S_DN $ssl_client_s_dn;
 
-See the LICENSING file for details
+(actually only the first one is needed)

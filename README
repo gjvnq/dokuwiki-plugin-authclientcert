@@ -1,12 +1,12 @@
-authclientcert Plugin for DokuWiki
+authclientcert0email0only Plugin for DokuWiki
 
 provides authentication via client certificate
 
 All documentation for this plugin can be found at
-https://www.dokuwiki.org/plugin:authclientcert
+https://www.dokuwiki.org/plugin:authclientcert0email0only
 
 If you install this plugin manually, make sure it is installed in
-lib/plugins/authclientcert/ - if the folder is called different it
+lib/plugins/authclientcert0email0only/ - if the folder is called different it
 will not work!
 
 Please refer to http://www.dokuwiki.org/plugins for additional info

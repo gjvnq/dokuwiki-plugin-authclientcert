@@ -1,7 +1,7 @@
-base   authclientcert
-author Pawel Jasinski
-email  pawel.jasinski@gmail.com
-date   2019-03-30
-name   authclientcert plugin
+base   authclientcert0email0only
+author G Queiroz
+email  gabrieljvnq@gmail.com
+date   2019-09-27
+name   authclientcert0email0only plugin
 desc   provides authentication via client certificate
-url    https://www.dokuwiki.org/plugin:authclientcert
+url    https://www.dokuwiki.org/plugin:authclientcert0email0only
